@@ -1,19 +1,31 @@
 import { WebSocketServer } from "ws";
 
-const socket = new WebSocketServer({ port: 3000 });
+const wss = new WebSocketServer({ port: 8080 });
+//DATADECODER
+const decoder = new TextDecoder("utf-8");
+//wss = WebsocketServer
+//ws = WebsocketConnexion
 
-socket.on("connection", (wsocket) => {
-  // send a message to the client
-  wsocket.send("Hello Client");
-
-  // receive a message from the client
-  wsocket.on("message", (data) => {
-    const packet = JSON.parse(data);
-
-    switch (packet.type) {
-      case "hello from client":
-        // ...
+wss.on("connection", (wsc, req) => {
+  //console.log("Persona " + req.socket.localAddress + " se ha conectado");
+  wsc.on("message", (data) => {
+    let clientMessage = JSON.parse(decoder.decode(data));
+    switch (clientMessage.type) {
+      case "connection":
+        console.log("User: " + req.socket.remoteAddress);
+        break;
+      case "chatMessage":
+        wss.broadcast(clientMessage, req);
+        break;
+      default:
         break;
     }
+    // console.log(clientMessage.type);
   });
 });
+
+wss.broadcast = function broadcast(data, req) {
+  wss.clients.forEach((client) => {
+    client.send(JSON.stringify(data));
+  });
+};
