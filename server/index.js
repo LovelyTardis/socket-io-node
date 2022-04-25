@@ -1,6 +1,7 @@
 import { WebSocketServer } from "ws";
 
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: process.env.PORT || 3456 });
+console.log("server started on port", process.env.PORT);
 //DATADECODER
 const decoder = new TextDecoder("utf-8");
 //wss = WebsocketServer

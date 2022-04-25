@@ -2,6 +2,7 @@ const inputMessage = document.getElementById("chatInput");
 const chatBox = document.getElementById("chatBox");
 const user = document.getElementById("username");
 const guestName = "Guest" + parseInt(Math.random() * 5000000);
+
 inputMessage.addEventListener("keypress", (e) => {
   if (inputMessage.value.trim() === "/clear") {
     chatBox.innerText = "";
@@ -16,8 +17,9 @@ inputMessage.addEventListener("keypress", (e) => {
     inputMessage.value = "";
   }
 });
+
 // sockets things
-const socket = new WebSocket("ws://192.168.210.154:8080");
+const socket = new WebSocket("ws://groupem.herokuapp.com");
 
 socket.onopen = () => {
   console.log("Connected to server");
