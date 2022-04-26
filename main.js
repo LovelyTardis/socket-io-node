@@ -54,3 +54,8 @@ socket.onmessage = (message) => {
   chatBox.appendChild(newMessageElement);
   chatBox.scrollTop = chatBox.scrollHeight;
 };
+
+setInterval(() => {
+  console.log("connecting");
+  socket.send(JSON.stringify({ still: "alive" }));
+}, 10000);
