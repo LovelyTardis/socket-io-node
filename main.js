@@ -13,49 +13,81 @@ inputMessage.addEventListener("keypress", (e) => {
       msg: inputMessage.value,
       type: "chatMessage",
     });
-    socket.send(message);
+    const data = {
+      meta: "send_message",
+      roomID: "room_1",
+      clientID: "Albert",
+      message: inputMessage.value,
+    };
+    socket.send(JSON.stringify(data));
+    console.log("message", inputMessage.value);
     inputMessage.value = "";
   }
 });
 
+const buttonCreateRoom = document.getElementById("createRoom");
+buttonCreateRoom.addEventListener("click", () => {
+  const data = {
+    meta: "create_room",
+    roomID: "room_1",
+    clientID: "Albert",
+    message: "",
+  };
+  socket.send(JSON.stringify(data));
+});
+
+const buttonJoinRoom = document.getElementById("joinRoom");
+buttonJoinRoom.addEventListener("click", () => {
+  const data = {
+    meta: "join_room",
+    roomID: "room_1",
+    clientID: "Albert",
+    message: "",
+  };
+  socket.send(JSON.stringify(data));
+});
+
 // sockets things
-const socket = new WebSocket("ws://groupem.herokuapp.com");
+const socket = new WebSocket("ws://192.168.210.154:8000");
+// const socket = new WebSocket("ws://localhost:8000");
+// const socket = new WebSocket("ws://groupem.herokuapp.com");
 
 socket.onopen = () => {
   console.log("Connected to server");
   let message = JSON.stringify({
     type: "connection",
   });
-  socket.send(message);
+
+  // socket.send(message);
   //socket.onmessage({ data: socket.localAddress });
 };
 
 socket.onmessage = (message) => {
-  const data = JSON.parse(message.data);
-  let newMessageElement;
-  if (data.msg.includes("http://") || data.msg.includes("https://")) {
-    newMessageElement = document.createElement("a");
-    newMessageElement.classList.add("ws__link");
-    newMessageElement.href = data.msg;
-    newMessageElement.target = "_blank";
-  } else {
-    newMessageElement = document.createElement("div");
-  }
-  newMessageElement.classList.add("ws__chat-message");
-
-  let userProfileElement = document.createElement("span");
-  userProfileElement.textContent = data.user;
-  userProfileElement.classList.add("ws__user-name");
-
-  newMessageElement.append(
-    userProfileElement,
-    `: ${data.msg}` ?? "El mensaje no ha llegado correctamente"
-  );
-  chatBox.appendChild(newMessageElement);
-  chatBox.scrollTop = chatBox.scrollHeight;
+  let data = JSON.parse(message.data);
+  console.log(data);
+  // const data = JSON.parse(message.data);
+  // let newMessageElement;
+  // // if (data.msg.includes("http://") || data.msg.includes("https://")) {
+  // //   newMessageElement = document.createElement("a");
+  // //   newMessageElement.classList.add("ws__link");
+  // //   newMessageElement.href = data.msg;
+  // //   newMessageElement.target = "_blank";
+  // // } else {
+  // // }
+  // newMessageElement = document.createElement("div");
+  // newMessageElement.classList.add("ws__chat-message");
+  // let userProfileElement = document.createElement("span");
+  // userProfileElement.textContent = data.user;
+  // userProfileElement.classList.add("ws__user-name");
+  // newMessageElement.append(
+  //   userProfileElement,
+  //   `: ${data.msg}` ?? "El mensaje no ha llegado correctamente"
+  // );
+  // chatBox.appendChild(newMessageElement);
+  // chatBox.scrollTop = chatBox.scrollHeight;
 };
 
-setInterval(() => {
-  console.log("connecting");
-  socket.send(JSON.stringify({ still: "alive" }));
-}, 10000);
+// setInterval(() => {
+//   console.log("connecting");
+//   socket.send("pong");
+// }, 1000);
