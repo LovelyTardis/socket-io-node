@@ -313,7 +313,7 @@ const available_room = (ws) => {
   }
 };
 
-wss.on("connection", function connection(ws) {
+wss.on("connection", (ws) => {
   try {
     ws.on("message", (recieveData) => {
       let data = JSON.parse(recieveData);
@@ -362,7 +362,7 @@ wss.on("connection", function connection(ws) {
           break;
       }
     });
-    ws.on("close", function (data) {
+    ws.on("close", (data) => {
       leaveRoom(ws, {
         roomID: ws.roomID,
         clientID: ws.clientID,
