@@ -125,6 +125,7 @@ const createRoom = (data, ws) => {
           status: 1,
         })
       );
+      // TODO save group info in the database
     }
   } catch (error) {
     ws.send(
@@ -224,6 +225,7 @@ const sendMessage = (data, ws, Status = null) => {
         }
       }
     }
+    // TODO save message in database
   } catch (error) {
     ws.send(
       JSON.stringify({
