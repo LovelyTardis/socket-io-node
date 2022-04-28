@@ -218,7 +218,7 @@ const sendMessage = (data, ws, Status = null) => {
         if (ws !== wsClientID) {
           wsClientID.send(
             JSON.stringify({
-              user: username,
+              user: "",
               message: message,
               status: Status ? Status : 1,
             })
