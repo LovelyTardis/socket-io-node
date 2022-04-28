@@ -213,11 +213,12 @@ const sendMessage = (data, ws, Status = null) => {
     const room = rooms[roomID];
     for (let i = 0; i < room.length; i++) {
       let user = room[i];
-      for (let innerObject in user) {
-        let wsClientID = user[innerObject];
+      for (let username in user) {
+        let wsClientID = user[username];
         if (ws !== wsClientID) {
           wsClientID.send(
             JSON.stringify({
+              user: username,
               message: message,
               status: Status ? Status : 1,
             })
